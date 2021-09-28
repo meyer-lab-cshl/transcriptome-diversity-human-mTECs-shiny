@@ -15,9 +15,9 @@ library(ComplexHeatmap)
 #Import data
 genome <- BSgenome.Hsapiens.NCBI.GRCh38
 seqlevelsStyle(genome) <- "UCSC"
-bgFile_hi <- rtracklayer::import.bedGraph("../data/tsr_tpm_hi_avg.bedGraph")
+bgFile_hi <- rtracklayer::import.bedGraph("../epitope_data/tsr_tpm_hi_avg.bedGraph")
 
-bgFile_lo <- rtracklayer::import.bedGraph("../data/tsr_tpm_lo_avg.bedGraph")
+bgFile_lo <- rtracklayer::import.bedGraph("../epitope_data/tsr_tpm_lo_avg.bedGraph")
 
 options(ucscChromosomeNames=FALSE)
 
@@ -40,24 +40,24 @@ gene_track <- GeneRegionTrack(
  transcriptAnnotation = "symbol")
 
 
-alTrack_hi <- AlignmentsTrack("../data/mtec_hi_Aligned.sortedByCoord.out.bam",
+alTrack_hi <- AlignmentsTrack("../epitope_data/mtec_hi_Aligned.sortedByCoord.out.bam",
                            isPaired = TRUE,
                            name = "mTEC hi RNAseq",
                            fill="#4c72b0ff")
 
-alTrack_lo <- AlignmentsTrack("../data/mtec_lo_Aligned.sortedByCoord.out.bam",
+alTrack_lo <- AlignmentsTrack("../epitope_data/mtec_lo_Aligned.sortedByCoord.out.bam",
                               isPaired = TRUE,
                               name = "mTEC lo RNAseq",
                               fill="#dd8452ff")
 
 alTrack_5cap_hi <- AlignmentsTrack(
-  "../data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
+  "../epitope_data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
   isPaired = TRUE,
   name = "mTEC hi 5Pseq",
   fill="#4c72b0ff")
 
 alTrack_5cap_lo <- AlignmentsTrack(
-  "../data/5cap_mtec_lo_Aligned.sortedByCoord.out.bam",
+  "../epitope_data/5cap_mtec_lo_Aligned.sortedByCoord.out.bam",
   isPaired = TRUE,
   name = "mTEC lo 5Pseq",
   fill="#dd8452ff")
