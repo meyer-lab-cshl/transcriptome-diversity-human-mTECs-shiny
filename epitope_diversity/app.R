@@ -6,10 +6,6 @@ library(devtools)
 library(remotes)
 
 
-rsconnect::setAccountInfo(name='chapin',
-                          token='1D2291431F22163DC0BAF790A564E998',
-                          secret='pgC+KHHrX7KZEnsEuNH1iMtW6s/8eDp1RLaq5D+k')
-
 source("browser.R")
 
 gene_df <- data.frame(
