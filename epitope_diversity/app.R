@@ -58,8 +58,9 @@ server <- function(input,output,session) {
     updateTextInput(session, "browser-location_str", value=loc)
   })
 
-  makeInteractiveComplexHeatmap(input, output, session, ht_tpm, "ht_tpm")
-  makeInteractiveComplexHeatmap(input, output, session, ht_lfc, "ht_lfc")
+    makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
+    #makeInteractiveComplexHeatmap(input, output, session, ht_tpm, "ht_tpm")
+    #makeInteractiveComplexHeatmap(input, output, session, ht_lfc, "ht_lfc")
 }
 
 shinyApp(ui, server)
