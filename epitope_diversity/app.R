@@ -1,23 +1,11 @@
 ## Libraries ####
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
-library(ComplexHeatmap)
-library(rsconnect)
-library(devtools)
-library(remotes)
 
 ## Load Browser functions and annotations ####
 source("browser.R")
 
-## Import data ####
-ht_tpm <- readRDS("data/tpm_heatmap.rds")
-ht_lfc <- readRDS("data/fc_heatmap.rds")
-
-gene_df <- data.frame(
-  gene=names(genes(txdb)),
-  location=as.character(genes(txdb)),
-  row.names=NULL, stringsAsFactors=FALSE)
-
+## Create dashboard ####
 ui <- dashboardPage(
   dashboardHeader(title = "Epitope Diversity"),
   dashboardSidebar(
@@ -30,10 +18,10 @@ ui <- dashboardPage(
     tabItems(
       tabItem("genes",
               fluidRow(
-                titlePanel("TSR, 5Pseq, and RNAseq Data"),
+                titlePanel("Genome Browser"),
+                p("Genome-wide transcription start regions and gene expression in two maturaion stages of human medullary thymic epithelial cells (mTECs) - immature, MHCII low expressing mTECs (mTEC lo) and mature, MHCII high expressing mTECs (mTEC hi)."),
                 DT::dataTableOutput("genes"),
-                p("This app displays TSR, 5Pseq, and RNAseq data from Carter et al."),
-                p("The Genes track diplays the gene strucure for the given region."),
+                p("The Genes track diplays the gene structure for the given region."),
                 p("The mTEC hi/lo TSR tracks display transcription start regions."),
                 p("The mTEC hi/lo 5Pseq tracks display the alignments of the reads from the 5Pseq experiments."),
                 p("The mTEC hi/lo RNAseq tracks display the alignments of the reads from the RNAseq experiments."),
@@ -66,7 +54,7 @@ server <- function(input,output,session) {
     })
 
   observeEvent(input$genes_rows_selected, {
-    loc <- gene_df$location[input$genes_rows_selected]
+    loc <- gene_annotation$location[input$genes_rows_selected]
     updateTextInput(session, "browser-location_str", value=loc)
   })
 
