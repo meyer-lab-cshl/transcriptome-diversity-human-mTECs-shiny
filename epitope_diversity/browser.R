@@ -2,20 +2,15 @@
 library(GenomicRanges)
 library(Gviz)
 library(rtracklayer)
-library(data.table)
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 library(BSgenome.Hsapiens.NCBI.GRCh38)
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
-library(ComplexHeatmap)
 
-## Import data ####
-genome <- BSgenome.Hsapiens.NCBI.GRCh38
-seqlevelsStyle(genome) <- "UCSC"
+
+## Import data objects ####
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 options(ucscChromosomeNames=FALSE)
-
-bgFile_hi <- rtracklayer::import.bedGraph("data/tsr_tpm_hi_avg.bedGraph")
-bgFile_lo <- rtracklayer::import.bedGraph("data/tsr_tpm_lo_avg.bedGraph")
 
 txdb <- makeTxDbFromEnsembl(organism="Homo sapiens",
                             release=NA,
@@ -24,6 +19,24 @@ txdb <- makeTxDbFromEnsembl(organism="Homo sapiens",
                             username="anonymous", password=NULL, port=0L,
                             tx_attrib=NULL)
 seqlevelsStyle(txdb) <- "UCSC"
+
+#txdb <- loadDb("data/txdb.db")
+
+bgFile_hi <- rtracklayer::import.bedGraph("data/tsr_tpm_hi_avg.bedGraph")
+bgFile_lo <- rtracklayer::import.bedGraph("data/tsr_tpm_lo_avg.bedGraph")
+
+ht_tpm <- readRDS("data/tpm_heatmap.rds")
+ht_lfc <- readRDS("data/fc_heatmap.rds")
+
+## Create annotations ####
+options(ucscChromosomeNames=FALSE)
+genome <- BSgenome.Hsapiens.NCBI.GRCh38
+seqlevelsStyle(genome) <- "UCSC"
+
+gene_annotation <- data.frame(
+    gene=names(genes(txdb)),
+    location=as.character(genes(txdb)),
+    row.names=NULL, stringsAsFactors=FALSE)
 
 ## Browser Tracks: Setting up ####
 ## Annotations
@@ -108,7 +121,9 @@ browser_ui <- function(id) {
   div(
     fluidRow(
       column(3,
-             textInput(ns("location_str"), "Genomic location", "chr11:1300000-1400000")),
+             textInput(ns("location_str"),
+                       "Genomic location",
+                       "chr11:1300000-1400000")),
       column(9,
              actionButton(ns("zoom_in"), "+"),
              actionButton(ns("zoom_out"), "-"))),
