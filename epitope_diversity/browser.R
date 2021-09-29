@@ -14,8 +14,8 @@ genome <- BSgenome.Hsapiens.NCBI.GRCh38
 seqlevelsStyle(genome) <- "UCSC"
 options(ucscChromosomeNames=FALSE)
 
-bgFile_hi <- rtracklayer::import.bedGraph("tsr_tpm_hi_avg.bedGraph")
-bgFile_lo <- rtracklayer::import.bedGraph("tsr_tpm_lo_avg.bedGraph")
+bgFile_hi <- rtracklayer::import.bedGraph("data/tsr_tpm_hi_avg.bedGraph")
+bgFile_lo <- rtracklayer::import.bedGraph("data/tsr_tpm_lo_avg.bedGraph")
 
 txdb <- makeTxDbFromEnsembl(organism="Homo sapiens",
                             release=NA,
@@ -34,28 +34,30 @@ gene_track <- GeneRegionTrack(
  transcriptAnnotation = "symbol")
 
 ## RNAseq data
-alTrack_hi <- AlignmentsTrack("mtec_hi_Aligned.sortedByCoord.out.bam",
-                           isPaired = TRUE,
-                           name = "mTEC hi RNAseq",
-                           fill="#4c72b0ff")
+alTrack_hi <- AlignmentsTrack(
+    "data/mtec_hi_Aligned.sortedByCoord.out.bam",
+    isPaired = TRUE,
+    name = "mTEC hi RNAseq",
+    fill="#4c72b0ff")
 
-alTrack_lo <- AlignmentsTrack("mtec_lo_Aligned.sortedByCoord.out.bam",
-                              isPaired = TRUE,
-                              name = "mTEC lo RNAseq",
-                              fill="#dd8452ff")
+alTrack_lo <- AlignmentsTrack(
+    "data/mtec_lo_Aligned.sortedByCoord.out.bam",
+    isPaired = TRUE,
+    name = "mTEC lo RNAseq",
+    fill="#dd8452ff")
 
 ## 5'Cap data
 alTrack_5cap_hi <- AlignmentsTrack(
-  "5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
-  isPaired = TRUE,
-  name = "mTEC hi 5Pseq",
-  fill="#4c72b0ff")
+    "data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
+    isPaired = TRUE,
+    name = "mTEC hi 5Pseq",
+    fill="#4c72b0ff")
 
 alTrack_5cap_lo <- AlignmentsTrack(
-  "5cap_mtec_lo_Aligned.sortedByCoord.out.bam",
-  isPaired = TRUE,
-  name = "mTEC lo 5Pseq",
-  fill="#dd8452ff")
+    "data/5cap_mtec_lo_Aligned.sortedByCoord.out.bam",
+    isPaired = TRUE,
+    name = "mTEC lo 5Pseq",
+    fill="#dd8452ff")
 
 ## Browser Tracks: Functions ####
 plot_genome <- function(location) {
@@ -80,7 +82,6 @@ plot_genome <- function(location) {
     #sizes = c(0.5,1,2,3,3),
     from=start(location), to=end(location),
     transcriptAnnotation="symbol")
-
 }
 
 plot_cap <- function(location) {
