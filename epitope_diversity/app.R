@@ -1,3 +1,4 @@
+## Libraries ####
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
 library(ComplexHeatmap)
@@ -5,29 +6,30 @@ library(ComplexHeatmap)
 library(devtools)
 library(remotes)
 
-
+## Load Browser functions and annotations ####
 source("browser.R")
 
+## Import data ####
+ht_tpm <- readRDS("tpm_heatmap.rds")
+ht_lfc <- readRDS("fc_heatmap.rds")
+
 gene_df <- data.frame(
-  gene=names(genes(txdb)),                 # txdb defined in browser.R
+  gene=names(genes(txdb)),
   location=as.character(genes(txdb)),
   row.names=NULL, stringsAsFactors=FALSE)
-
-ht_tpm <- readRDS("tpm_heatmap.rds")
-
-ht_lfc <- readRDS("fc_heatmap.rds")
 
 ui <- dashboardPage(
   dashboardHeader(title = "Epitope Diversity"),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("TRS, 5Pseq, and RNAseq Data", tabName = "genes", icon = icon("th")),
+      menuItem("TRS, 5Pseq, and RNAseq Data",
+               tabName = "genes", icon = icon("th")),
       menuItem("Heatmaps", tabName = "hts", icon = icon("th")),
       menuItem("About", tabName = "About", icon = icon("th")))),
   dashboardBody(
     tabItems(
       tabItem("genes",
-                fluidRow(
+              fluidRow(
                 titlePanel("TSR, 5Pseq, and RNAseq Data"),
                 DT::dataTableOutput("genes"),
                 p("This app displays TSR, 5Pseq, and RNAseq data from Carter et al."),
@@ -37,8 +39,6 @@ ui <- dashboardPage(
                 p("The mTEC hi/lo RNAseq tracks display the alignments of the reads from the RNAseq experiments."),
                 browser_ui("browser"))
       ),
-
-      
       tabItem("hts",
               h2("Heatmaps"),
               h3("TPM Zscores"),
@@ -47,32 +47,29 @@ ui <- dashboardPage(
               h3("LogFoldChanges"),
               InteractiveComplexHeatmapOutput("ht_lfc"),
               hr()),
-
-      
       tabItem("About",
               h2("About"),
               p("About text here"),
               hr())
-      )
     )
   )
-
+)
 
 server <- function(input,output,session) {
   callModule(browser_server, "browser")
-  
+
   output$Sample1 <- DT::renderDataTable(
     server = TRUE,
     selection = "single",
     options = list(pageLength=10), {
       gene_df
     })
-  
+
   observeEvent(input$genes_rows_selected, {
     loc <- gene_df$location[input$genes_rows_selected]
     updateTextInput(session, "browser-location_str", value=loc)
   })
-   
+
   makeInteractiveComplexHeatmap(input, output, session, ht_tpm, "ht_tpm")
   makeInteractiveComplexHeatmap(input, output, session, ht_lfc, "ht_lfc")
 }
