@@ -8,7 +8,6 @@ library(shinydashboard)
 library(InteractiveComplexHeatmap)
 
 ## Import data objects ####
-#library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 options(ucscChromosomeNames=FALSE)
 txdb <- makeTxDbFromEnsembl(organism="Homo sapiens",
                             release=NA,
