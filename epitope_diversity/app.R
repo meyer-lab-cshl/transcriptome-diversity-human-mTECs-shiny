@@ -10,8 +10,8 @@ library(remotes)
 source("browser.R")
 
 ## Import data ####
-ht_tpm <- readRDS("tpm_heatmap.rds")
-ht_lfc <- readRDS("fc_heatmap.rds")
+ht_tpm <- readRDS("data/tpm_heatmap.rds")
+ht_lfc <- readRDS("data/fc_heatmap.rds")
 
 gene_df <- data.frame(
   gene=names(genes(txdb)),
