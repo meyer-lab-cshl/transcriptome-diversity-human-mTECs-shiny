@@ -37,7 +37,7 @@ diffexp <- read.csv(file = "epitope_data/mTEC_RNAseq_results_all.csv")
 #keep only significant genes
 
 diffexp <- diffexp[!(is.na(diffexp$pval)),] 
-diffexp <- diffexp[diffexp$pval < 0.005,]
+diffexp <- diffexp[diffexp$qval < 0.05,]
 rownames(diffexp) <- NULL
 
 #remove rows with duplicated ens_gene ids
@@ -86,20 +86,6 @@ counts <- diffexp_no_dup_symbols %>%
                   "pt226_lo_tpm")) 
 
 #caclualte tpm z score
-counts_zscore <- counts %>%
-  mutate(pt214_hi_zscore = (pt214_hi_tpm - mean(pt214_hi_tpm))/sd(pt214_hi_tpm),
-         pt214_lo_zscore = (pt214_lo_tpm - mean(pt214_lo_tpm))/sd(pt214_lo_tpm),
-         pt221_hi_zscore = (pt221_hi_tpm - mean(pt221_hi_tpm))/sd(pt221_hi_tpm),
-         pt221_lo_zscore = (pt221_lo_tpm - mean(pt221_lo_tpm))/sd(pt221_lo_tpm),
-         pt226_hi_zscore = (pt226_hi_tpm - mean(pt226_hi_tpm))/sd(pt226_hi_tpm),
-         pt226_lo_zscore = (pt226_lo_tpm - mean(pt226_lo_tpm))/sd(pt226_lo_tpm)) %>%
-  dplyr::select(-c(pt214_hi_tpm,
-                   pt214_lo_tpm,
-                   pt221_hi_tpm,
-                   pt221_lo_tpm,
-                   pt226_hi_tpm,
-                   pt226_lo_tpm))
-
 counts_zscore <- t(counts) %>%
   scale %>%
   t %>%
