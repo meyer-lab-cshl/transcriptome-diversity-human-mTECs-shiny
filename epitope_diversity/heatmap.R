@@ -35,7 +35,7 @@ map_color_range <- function(matrix, color_vec) {
 diffexp <- read.csv(file = "epitope_data/mTEC_RNAseq_results_all.csv")
 
 # keep only significant genes
-diffexp <- diffexp[!(is.na(diffexp$qval)),]
+diffexp <- diffexp[!(is.na(diffexp$pval)),]
 diffexp <- diffexp[diffexp$qval < 0.05,]
 rownames(diffexp) <- NULL
 
