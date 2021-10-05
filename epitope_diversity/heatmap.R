@@ -37,13 +37,6 @@ diffexp <- read.csv(file = "epitope_data/mTEC_RNAseq_results_all.csv")
 # keep only significant genes
 diffexp <- diffexp[!(is.na(diffexp$qval)),]
 diffexp <- diffexp[diffexp$qval < 0.05,]
-rownames(diffexp) <- NULL
-
-#remove rows with duplicated ens_gene ids
-diffexp_no_dup <- diffexp[!duplicated(diffexp$ens_gene),]
-
-diffexp_no_dup <- diffexp_no_dup %>%
-  drop_na(ens_gene)
 
 #Switch from ensembl id to gene symbol
 ensembl_human <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
@@ -51,32 +44,29 @@ ensembl_human <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
 genemap_human <- getBM(attributes=c("ensembl_gene_id",
                                                "external_gene_name"),
                                   filters = "ensembl_gene_id",
-                                  values = diffexp_no_dup$ens_gene,
+                                  values = diffexp$ens_gene,
                                   mart = ensembl_human)
 
-#Remove genemap entries with duplicates in external_gene_name
-genemap_human <- genemap_human[!duplicated(genemap_human$external_gene_name),]
+diffexp_symbols <- diffexp %>%
+  left_join(genemap_human, by = c("ens_gene" = "ensembl_gene_id")) %>%
+  mutate(external_gene_name = ifelse(external_gene_name== "", 
+                                     ens_gene, 
+                                     external_gene_name)) %>%
+  mutate(external_gene_name = ifelse(is.na(external_gene_name), 
+                                     target_id, 
+                                     external_gene_name)) %>%
+  mutate(external_gene_name = 
+           ifelse(duplicated(external_gene_name),
+                  paste(external_gene_name, 
+                        target_id, sep ="_"),
+                  external_gene_name)) 
 
-rownames(genemap_human) <- NULL
 
-#Get rid of genes that don't have entries in genemap_human
-diffexp_no_dup <- diffexp_no_dup[(diffexp_no_dup$ens_gene
-                                                    %in% genemap_human$ensembl_gene_id), ]
-rownames(diffexp_no_dup) <- NULL
-
-diffexp_no_dup <- diffexp_no_dup %>%
-  column_to_rownames(var = "ens_gene")
-
-genemap_human <- genemap_human %>%
-  column_to_rownames(var = "ensembl_gene_id")
-
-diffexp_no_dup_symbols <- cbind(diffexp_no_dup, genemap_human) %>%
-  rownames_to_column(var = "ensembl_gene_id") %>%
+diffexp_symbols <- diffexp_symbols %>%
   column_to_rownames(var = "external_gene_name")
 
-
 # obtain tpms
-counts <- diffexp_no_dup_symbols %>%
+counts <- diffexp_symbols %>%
   dplyr::select(c("pt214_hi_tpm",
                   "pt214_lo_tpm",
                   "pt221_hi_tpm",
@@ -90,7 +80,7 @@ counts_zscore <- t(counts) %>%
   t %>%
   as.data.frame()
 
-fc <- diffexp_no_dup_symbols %>%
+fc <- diffexp_symbols %>%
   dplyr::select("b")
 
 #Combine tpms and fc
@@ -98,7 +88,7 @@ combined <- cbind(counts_zscore, fc)
 
 #counts matrix
 counts_matrix <- combined %>%
-  dplyr::select(b) %>%
+  dplyr::select(-b) %>%
   dplyr::select(contains("hi"), contains("lo")) %>%
   as.matrix
 
@@ -116,7 +106,6 @@ cond_type_vals <- c('#4c72b0ff', '#dd8452ff')
 names(cond_type_vals) <- unique(coldata$labels)
 color <- list(cond_type = cond_type_vals)
 counts_color <- c('#a6611a','#dfc27d','#f5f5f5','#80cdc1','#018571')
-#counts_color <- c('#ffffcc','#a1dab4','#41b6c4','#2c7fb8','#253494')
 fc_color <- c('#0571b0','#92c5de','#f7f7f7','#f4a582','#ca0020')
 
 columnAnno <- columnAnnotation(
