@@ -34,8 +34,9 @@ map_color_range <- function(matrix, color_vec) {
 ## data ####
 diffexp <- read.csv(file = "epitope_data/mTEC_RNAseq_results_all.csv")
 
+
 # keep only significant genes
-diffexp <- diffexp[!(is.na(diffexp$pval)),]
+diffexp <- diffexp[!(is.na(diffexp$qval)),]
 diffexp <- diffexp[diffexp$qval < 0.05,]
 rownames(diffexp) <- NULL
 
@@ -54,7 +55,7 @@ genemap_human <- getBM(attributes=c("ensembl_gene_id",
                                   values = diffexp_no_dup$ens_gene,
                                   mart = ensembl_human)
 
-#Remove genemap entries with duplicates in external_gene_name
+# Remove genemap entries with duplicates in external_gene_name
 genemap_human <- genemap_human[!duplicated(genemap_human$external_gene_name),]
 
 rownames(genemap_human) <- NULL
@@ -93,12 +94,13 @@ counts_zscore <- t(counts) %>%
 fc <- diffexp_no_dup_symbols %>%
   dplyr::select("b")
 
-#Combine tpms and fc
+# combine tpms and fc
 combined <- cbind(counts_zscore, fc)
 
-#counts matrix
+
+# counts matrix
 counts_matrix <- combined %>%
-  dplyr::select(b) %>%
+  dplyr::select(-b) %>%
   dplyr::select(contains("hi"), contains("lo")) %>%
   as.matrix
 
@@ -112,7 +114,7 @@ sample <- colnames(counts_matrix)
 coldata <- data.frame(sample, labels)
 
 # Set heatmap colors, themes, and sizes
-cond_type_vals <- c('#4c72b0ff', '#dd8452ff')
+cond_type_vals <- c('#4c72b0ff','#dd8452ff')
 names(cond_type_vals) <- unique(coldata$labels)
 color <- list(cond_type = cond_type_vals)
 counts_color <- c('#a6611a','#dfc27d','#f5f5f5','#80cdc1','#018571')
@@ -168,7 +170,7 @@ hm_fc <- Heatmap(fc_matrix,
                  name = "lFC",
                  width = unit(3, "cm"))
 
-#Save counts heatmap
+# Save counts heatmap
 saveRDS(hm_counts_sig, file = "data/tpm_heatmap.rds")
 saveRDS(hm_fc, "data/fc_heatmap.rds")
 
