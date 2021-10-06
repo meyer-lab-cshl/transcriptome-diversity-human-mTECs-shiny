@@ -10,21 +10,12 @@ library(InteractiveComplexHeatmap)
 data_path <- "../data"
 
 ## Import data objects ####
-if (FALSE) {
-    options(ucscChromosomeNames=FALSE)
-    txdb <- makeTxDbFromEnsembl(organism="Homo sapiens",
-                                release=NA,
-                                circ_seqs=NULL,
-                                server="ensembldb.ensembl.org",
-                                username="anonymous", password=NULL, port=0L,
-                                tx_attrib=NULL)
-    seqlevelsStyle(txdb) <- "UCSC"
-}
-txdb <- loadDb(file.path(data_path, "txdb.db"))
+txdb <- loadDb(file.path(data_path, "txdb_ucsc.db"))
 
-
-bgFile_hi <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_hi_sum.bedGraph"))
-bgFile_lo <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_lo_sum.bedGraph"))
+bgFile_hi <- rtracklayer::import.bedGraph(file.path(data_path,
+                                                    "tsr_tpm_hi_sum.bedGraph"))
+bgFile_lo <- rtracklayer::import.bedGraph(file.path(data_path,
+                                                    "tsr_tpm_lo_sum.bedGraph"))
 
 ht_tpm <- readRDS(file.path(data_path, "tpm_heatmap.rds"))
 ht_lfc <- readRDS(file.path(data_path, "fc_heatmap.rds"))
@@ -44,9 +35,6 @@ gene_annotation <- data.frame(
 ## Browser Tracks: Setting up ####
 ## Annotations
 axis_track <- GenomeAxisTrack()
-gene_track <- GeneRegionTrack(
-    txdb, genome = "hg38", name="Genes", showId=TRUE, shape="arrow",
-    transcriptAnnotation = "symbol")
 
 ## RNAseq data
 alTrack_hi <- AlignmentsTrack(
@@ -93,15 +81,15 @@ data_track_lo <- DataTrack(range = bgFile_lo,
                            col ="#dd8452ff",
                            type = "h")
 
-
 ## Plot Browser Tracks ####
 plot_genome <- function(location) {
     chr_name <- as.character(seqnames(location))
     ideogram_track <- IdeogramTrack(genome = "hg38", chromosome = chr_name)
 
-    #gene_track <- GeneRegionTrack(
-    #    txdb, genome = "hg38", name="Genes", showId=TRUE, shape="arrow",
-    #    transcriptAnnotation = "symbol", chromosome = gsub("chr", "", chr_name))
+    gene_track <- GeneRegionTrack(
+        txdb, genome = "hg38", name="Genes", showId=TRUE, shape="arrow",
+        transcriptAnnotation = "symbol", chromosome = chr_name,
+        start=start(location), end=end(location))
 
     plotTracks(
         list(ideogram_track,
