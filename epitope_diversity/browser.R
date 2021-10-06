@@ -10,7 +10,7 @@ library(InteractiveComplexHeatmap)
 data_path <- "../data"
 
 ## Import data objects ####
-if (TRUE) {
+if (FALSE) {
     options(ucscChromosomeNames=FALSE)
     txdb <- makeTxDbFromEnsembl(organism="Homo sapiens",
                                 release=NA,
@@ -20,7 +20,8 @@ if (TRUE) {
                                 tx_attrib=NULL)
     seqlevelsStyle(txdb) <- "UCSC"
 }
-#txdb <- loadDb(file.path(data_path, "txdb.db"))
+txdb <- loadDb(file.path(data_path, "txdb.db"))
+
 
 bgFile_hi <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_hi_sum.bedGraph"))
 bgFile_lo <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_lo_sum.bedGraph"))
@@ -97,6 +98,10 @@ data_track_lo <- DataTrack(range = bgFile_lo,
 plot_genome <- function(location) {
     chr_name <- as.character(seqnames(location))
     ideogram_track <- IdeogramTrack(genome = "hg38", chromosome = chr_name)
+
+    #gene_track <- GeneRegionTrack(
+    #    txdb, genome = "hg38", name="Genes", showId=TRUE, shape="arrow",
+    #    transcriptAnnotation = "symbol", chromosome = gsub("chr", "", chr_name))
 
     plotTracks(
         list(ideogram_track,
