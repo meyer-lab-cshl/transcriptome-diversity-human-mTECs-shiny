@@ -23,7 +23,7 @@ if (TRUE) {
 #txdb <- loadDb(file.path(data_path, "txdb.db"))
 
 bgFile_hi <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_hi_sum.bedGraph"))
-bgFile_lo <- rtracklayer::import.bedGraph(file.path(data_path, "data/tsr_tpm_lo_sum.bedGraph"))
+bgFile_lo <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_lo_sum.bedGraph"))
 
 ht_tpm <- readRDS(file.path(data_path, "tpm_heatmap.rds"))
 ht_lfc <- readRDS(file.path(data_path, "fc_heatmap.rds"))
@@ -49,7 +49,7 @@ gene_track <- GeneRegionTrack(
 
 ## RNAseq data
 alTrack_hi <- AlignmentsTrack(
-    #"data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
+    #file.path(data_path, "5cap_mtec_hi_Aligned.sortedByCoord.out.bam"),
     file.path(data_path, "mtec_hi_Aligned.sortedByCoord.out.bam"),
     isPaired = TRUE,
     name = "mTEC hi RNAseq",
@@ -57,7 +57,7 @@ alTrack_hi <- AlignmentsTrack(
     type = c("coverage", "sashimi"))
 
 alTrack_lo <- AlignmentsTrack(
-    #"data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
+    #file.path(data_path, "5cap_mtec_hi_Aligned.sortedByCoord.out.bam"),
     file.path(data_path, "mtec_lo_Aligned.sortedByCoord.out.bam"),
     isPaired = TRUE,
     name = "mTEC lo RNAseq",
