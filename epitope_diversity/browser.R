@@ -7,6 +7,8 @@ library(BSgenome.Hsapiens.NCBI.GRCh38)
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
 
+data_path <- "../data"
+
 ## Import data objects ####
 if (TRUE) {
     options(ucscChromosomeNames=FALSE)
@@ -18,13 +20,13 @@ if (TRUE) {
                                 tx_attrib=NULL)
     seqlevelsStyle(txdb) <- "UCSC"
 }
-#txdb <- loadDb("data/txdb.db")
+#txdb <- loadDb(file.path(data_path, "txdb.db"))
 
-bgFile_hi <- rtracklayer::import.bedGraph("data/tsr_tpm_hi_sum.bedGraph")
-bgFile_lo <- rtracklayer::import.bedGraph("data/tsr_tpm_lo_sum.bedGraph")
+bgFile_hi <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_hi_sum.bedGraph"))
+bgFile_lo <- rtracklayer::import.bedGraph(file.path(data_path, "tsr_tpm_lo_sum.bedGraph"))
 
-ht_tpm <- readRDS("data/tpm_heatmap.rds")
-ht_lfc <- readRDS("data/fc_heatmap.rds")
+ht_tpm <- readRDS(file.path(data_path, "tpm_heatmap.rds"))
+ht_lfc <- readRDS(file.path(data_path, "fc_heatmap.rds"))
 
 ht <- ht_tpm + ht_lfc
 
@@ -47,16 +49,16 @@ gene_track <- GeneRegionTrack(
 
 ## RNAseq data
 alTrack_hi <- AlignmentsTrack(
-    #"data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
-    "data/mtec_hi_Aligned.sortedByCoord.out.bam",
+    #file.path(data_path, "5cap_mtec_hi_Aligned.sortedByCoord.out.bam"),
+    file.path(data_path, "mtec_hi_Aligned.sortedByCoord.out.bam"),
     isPaired = TRUE,
     name = "mTEC hi RNAseq",
     fill="#4c72b0ff",
     type = c("coverage", "sashimi"))
 
 alTrack_lo <- AlignmentsTrack(
-    #"data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
-    "data/mtec_lo_Aligned.sortedByCoord.out.bam",
+    #file.path(data_path, "5cap_mtec_hi_Aligned.sortedByCoord.out.bam"),
+    file.path(data_path, "mtec_lo_Aligned.sortedByCoord.out.bam"),
     isPaired = TRUE,
     name = "mTEC lo RNAseq",
     fill="#dd8452ff",
@@ -64,14 +66,14 @@ alTrack_lo <- AlignmentsTrack(
 
 ## 5'Cap data
 alTrack_5cap_hi <- AlignmentsTrack(
-    "data/5cap_mtec_hi_Aligned.sortedByCoord.out.bam",
+    file.path(data_path, "5cap_mtec_hi_Aligned.sortedByCoord.out.bam"),
     isPaired = TRUE,
     name = "mTEC hi 5Pseq",
     fill="#4c72b0ff",
     type = "coverage")
 
 alTrack_5cap_lo <- AlignmentsTrack(
-    "data/5cap_mtec_lo_Aligned.sortedByCoord.out.bam",
+    file.path(data_path, "5cap_mtec_lo_Aligned.sortedByCoord.out.bam"),
     isPaired = TRUE,
     name = "mTEC lo 5Pseq",
     fill="#dd8452ff",
