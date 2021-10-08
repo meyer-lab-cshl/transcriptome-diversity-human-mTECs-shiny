@@ -84,10 +84,10 @@ ui <- dashboardPage(
             div(
                 titlePanel("Expression Heatmap"),
                 p(
-                    "Heatmaps of TPM data and Log Fold Changes for the mTEC hi/lo samples."
+                    "Gene expression (in transcripts per million) and log fold changes in expression of mTEC hi versus mTEC lo samples."
                 ),
                 p(
-                    "Some genes have multiple entries, as there can be multiple Ensembl Transcript ID's corresponding to the same gene name. In order to search for all instances of a particular gene in these cases, select the Regular Expression option in the search tab, and then enter the gene name as the Keyword."
+                    "Gene expression is displayed and searchable on transcript level (multiple Ensembl Transcript ID's corresponding to the same gene). In order to search for all instances of a particular gene in these cases, select the", em("Regular expression"), "option in the search tab, and then enter the gene name as the ", em("Keyword"), "."
                 )
             ),
             InteractiveComplexHeatmapOutput("ht"),
@@ -116,7 +116,7 @@ server <- function(input, output, session) {
     makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
     #makeInteractiveComplexHeatmap(input, output, session, ht_tpm, "ht_tpm")
     #makeInteractiveComplexHeatmap(input, output, session, ht_lfc, "ht_lfc")
-    
+
     output$keep_alive <- renderText({
         req(input$alive_count)
         input$alive_count
