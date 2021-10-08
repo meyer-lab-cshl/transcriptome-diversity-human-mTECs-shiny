@@ -81,7 +81,15 @@ ui <- dashboardPage(
         ),
         tabItem(
             "hts",
-            h2("Expression Heatmap"),
+            div(
+                titlePanel("Expression Heatmap"),
+                p(
+                    "Heatmaps of TPM data and Log Fold Changes for the mTEC hi/lo samples."
+                ),
+                p(
+                    "Some genes have multiple entries, as there can be multiple Ensembl Transcript ID's corresponding to the same gene name. In order to search for all instances of a particular gene in these cases, select the Regular Expression option in the search tab, and then enter the gene name as the Keyword."
+                )
+            ),
             InteractiveComplexHeatmapOutput("ht"),
             hr()
         )
@@ -108,6 +116,11 @@ server <- function(input, output, session) {
     makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
     #makeInteractiveComplexHeatmap(input, output, session, ht_tpm, "ht_tpm")
     #makeInteractiveComplexHeatmap(input, output, session, ht_lfc, "ht_lfc")
+    
+    output$keep_alive <- renderText({
+        req(input$alive_count)
+        input$alive_count
+    })
 }
 
 shinyApp(ui, server)
