@@ -93,7 +93,8 @@ ui <- dashboardPage(
             InteractiveComplexHeatmapOutput("ht"),
             hr()
         )
-    ))
+    )),
+    textOutput("keep_alive")
 )
 
 server <- function(input, output, session) {
