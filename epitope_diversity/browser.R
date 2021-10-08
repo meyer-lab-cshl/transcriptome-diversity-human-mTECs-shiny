@@ -7,6 +7,9 @@ library(BSgenome.Hsapiens.NCBI.GRCh38)
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
 
+options(shiny.port = 6372)
+options(shiny.host = "0.0.0.0")
+
 data_path <- "../data"
 
 ## Import data objects ####

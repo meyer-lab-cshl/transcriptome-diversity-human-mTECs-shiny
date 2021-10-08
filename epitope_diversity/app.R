@@ -1,4 +1,5 @@
 ## Libraries ####
+library(shiny)
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
 
