@@ -115,6 +115,11 @@ server <- function(input, output, session) {
     makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
     #makeInteractiveComplexHeatmap(input, output, session, ht_tpm, "ht_tpm")
     #makeInteractiveComplexHeatmap(input, output, session, ht_lfc, "ht_lfc")
+    
+    output$keep_alive <- renderText({
+        req(input$alive_count)
+        input$alive_count
+    })
 }
 
 shinyApp(ui, server)
