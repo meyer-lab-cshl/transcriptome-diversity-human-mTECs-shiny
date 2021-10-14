@@ -12,24 +12,24 @@ ui <- dashboardPage(
     dashboardHeader(title = "Epitope Diversity in human T cell education",
                     titleWidth = 450),
     dashboardSidebar(
-       # width = 450,
+        # width = 450,
         sidebarMenu(
-        menuItem(
-            "About",
-            tabName = "About",
-            icon = icon("project-diagram")
-        ),
-        menuItem(
-            "Epitope Browser",
-            tabName = "genes",
-            icon = icon("wpexplorer")
-        ),
-        menuItem(
-            "Expression Heatmaps",
-            tabName = "hts",
-            icon = icon("th")
-        )
-    )),
+            menuItem(
+                "About",
+                tabName = "About",
+                icon = icon("project-diagram")
+            ),
+            menuItem(
+                "Epitope Browser",
+                tabName = "genes",
+                icon = icon("wpexplorer")
+            ),
+            menuItem(
+                "Expression Heatmaps",
+                tabName = "hts",
+                icon = icon("th")
+            )
+        )),
     dashboardBody(tabItems(
         tabItem("About",
                 div(
@@ -62,7 +62,7 @@ ui <- dashboardPage(
                 )),
         tabItem(
             "genes",
-
+            
             div(
                 titlePanel("Epitope Browser"),
                 p(
@@ -75,7 +75,21 @@ ui <- dashboardPage(
                 ),
                 shiny::tags$li(
                     "The mTEC hi/lo RNAseq tracks display the alignments of the reads from the RNAseq experiments."
-                )
+                ),
+                shiny::tags$script(HTML(
+                    "var socket_timeout_interval;
+var n = 0;
+
+$(document).on('shiny:connected', function(event) {
+  socket_timeout_interval = setInterval(function() {
+    Shiny.onInputChange('alive_count', n++)
+  }, 10000);
+});
+
+$(document).on('shiny:disconnected', function(event) {
+  clearInterval(socket_timeout_interval)
+});"
+                ))
             ),
             browser_ui("browser")
         ),
@@ -93,13 +107,12 @@ ui <- dashboardPage(
             InteractiveComplexHeatmapOutput("ht"),
             hr()
         )
-    )),
-    textOutput("keep_alive")
+    ))
 )
 
 server <- function(input, output, session) {
     callModule(browser_server, "browser")
-
+    
     output$Sample1 <- DT::renderDataTable(
         server = TRUE,
         selection = "single",
@@ -108,19 +121,19 @@ server <- function(input, output, session) {
             gene_annotation
         }
     )
-
+    
     observeEvent(input$genes_rows_selected, {
         loc <- gene_annotation$location[input$genes_rows_selected]
         updateTextInput(session, "browser-location_str", value = loc)
     })
-
+    
     makeInteractiveComplexHeatmap(input, output, session, ht, "ht")
     #makeInteractiveComplexHeatmap(input, output, session, ht_tpm, "ht_tpm")
     #makeInteractiveComplexHeatmap(input, output, session, ht_lfc, "ht_lfc")
-
-    timer <- reactiveTimer(1000 * 60 * 5) # time unit in milliseconds
-    observe({
-        timer()
+    
+    output$keep_alive <- renderText({
+        req(input$alive_count)
+        input$alive_count
     })
 }
 
