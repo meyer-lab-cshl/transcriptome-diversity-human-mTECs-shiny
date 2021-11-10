@@ -1,6 +1,7 @@
 ## CRAN ####
 install.packages(c('devtools', 'magick', 'BiocManager', 'data.table',
-                   'shinydashboard', 'RMariaDB'))
+                   'shinydashboard', 'RMariaDB'), 
+                 repos = "http://cran.us.r-project.org")
 
 ## Bioconductor
 
