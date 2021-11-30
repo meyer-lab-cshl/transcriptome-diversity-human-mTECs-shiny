@@ -28,6 +28,11 @@ ui <- dashboardPage(
                 "Expression Heatmaps",
                 tabName = "hts",
                 icon = icon("th")
+            ),
+            menuItem(
+              "Methods",
+              tabName = "mtds",
+              icon = icon("th")
             )
         )),
     dashboardBody(tabItems(
@@ -106,6 +111,15 @@ $(document).on('shiny:disconnected', function(event) {
             ),
             InteractiveComplexHeatmapOutput("ht"),
             hr()
+        ),
+        tabItem(
+          "mtds",
+          div(
+            titlePanel("Methods"),
+            p(
+              "Methods here."
+            )
+          ),
         )
     ))
 )
