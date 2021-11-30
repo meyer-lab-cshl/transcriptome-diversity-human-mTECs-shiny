@@ -6,8 +6,6 @@ library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 library(BSgenome.Hsapiens.NCBI.GRCh38)
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
-library(biomaRt)
-library(shinyWidgets)
 
 options(shiny.port = 6372)
 options(shiny.host = "0.0.0.0")
