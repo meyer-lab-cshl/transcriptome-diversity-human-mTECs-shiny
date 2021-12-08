@@ -9,6 +9,7 @@ library(InteractiveComplexHeatmap)
 
 options(shiny.port = 6372)
 options(shiny.host = "0.0.0.0")
+options(shiny.sanitize.errors = TRUE)
 
 data_path <- "../data"
 
@@ -29,18 +30,28 @@ ht <- ht_tpm + ht_lfc
 tx_locs <- readRDS(file.path(data_path, "tx_locs.rds"))
 
 find_loc <- function(term) {
+  term <- if(startsWith(term, "chr")) {
+    term
+  } else {
+    toupper(term)
+  }
+
   index <- if(term %in% tx_locs$ensembl_transcript_id_version) {
     grep(term, tx_locs$ensembl_transcript_id_version)
   } else if(term %in% tx_locs$ensembl_transcript_id) {
     grep(term, tx_locs$ensembl_transcript_id)
   } else if(term %in% tx_locs$external_gene_name) {
     grep(term, tx_locs$external_gene_name)
-  } else if(startsWith(term, "chr:")) {
+  } else if(startsWith(term, "chr")) {
     term
+  } else {
+    "error"
   }
 
   if(startsWith(term, "chr")) {
     loc <- term
+  } else if(index == "error") {
+    loc <- "error"
   } else {loc <- paste0("chr",
                         tx_locs$chromosome_name[index],
                         ":",
@@ -185,7 +196,13 @@ browser_server <- function(input, output, session) {
   })
 
   output$genome_plot <- renderPlot({
-    plot_genome( location() )
+    if (find_loc(input$location_str) == "error") {
+      stop(safeError(
+        "Input unknown: please check for typos"
+      ))
+    } else {
+      plot_genome( location() )
+    }
   })
 }
 
