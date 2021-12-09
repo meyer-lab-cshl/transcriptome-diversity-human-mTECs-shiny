@@ -164,7 +164,7 @@ browser_ui <- function(id) {
     div(textInput(
       ns("location_str"),
       "Genomic Location, Gene Name, or Ensembl Transcript ID",
-      "chr1:1250000-1300000"
+      "AIRE"
     ),
     style = "margin-top:25px"),
     div(
