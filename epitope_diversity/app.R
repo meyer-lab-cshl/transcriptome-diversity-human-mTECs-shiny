@@ -106,7 +106,7 @@ $(document).on('shiny:disconnected', function(event) {
                     "Gene expression (in transcripts per million) and log fold changes in expression of mTEC hi versus mTEC lo samples."
                 ),
                 p(
-                    "Gene expression is displayed and searchable on transcript level (multiple Ensembl Transcript ID's corresponding to the same gene). In order to search for all instances of a particular gene in these cases, select the", em("Regular expression"), "option in the search tab, and then enter the gene name as the ", em("Keyword"), "."
+                    "Gene expression is displayed and searchable on transcript level (multiple Ensembl Transcript ID's corresponding to the same gene). In order to search for all instances of a particular gene in these cases, select the", em("Regular expression"), "option in the search tab, and then enter the gene name as the ", em("Keyword"),". All letters in the gene names and transcript ID's must be capitalized."
                 )
             ),
             InteractiveComplexHeatmapOutput("ht"),
