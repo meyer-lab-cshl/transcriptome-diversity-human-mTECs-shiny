@@ -6,6 +6,7 @@ library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 library(BSgenome.Hsapiens.NCBI.GRCh38)
 library(shinydashboard)
 library(InteractiveComplexHeatmap)
+library(berryFunctions)
 
 options(shiny.port = 6372)
 options(shiny.host = "0.0.0.0")
@@ -37,11 +38,11 @@ find_loc <- function(term) {
   }
 
   index <- if(term %in% tx_locs$ensembl_transcript_id_version) {
-    grep(term, tx_locs$ensembl_transcript_id_version)
+    which(tx_locs$ensembl_transcript_id_version == term)
   } else if(term %in% tx_locs$ensembl_transcript_id) {
-    grep(term, tx_locs$ensembl_transcript_id)
+    which(tx_locs$ensembl_transcript_id == term)
   } else if(term %in% tx_locs$external_gene_name) {
-    grep(term, tx_locs$external_gene_name)
+    which(tx_locs$external_gene_name == term)
   } else if(startsWith(term, "chr")) {
     term
   } else {
@@ -50,7 +51,7 @@ find_loc <- function(term) {
 
   if(startsWith(term, "chr")) {
     loc <- term
-  } else if(index == "error") {
+  } else if(any(index == "error")) {
     loc <- "error"
   } else {loc <- paste0("chr",
                         tx_locs$chromosome_name[index],
@@ -196,11 +197,11 @@ browser_server <- function(input, output, session) {
   })
 
   output$genome_plot <- renderPlot({
-    if (find_loc(input$location_str) == "error") {
+    if (is.error(GRanges(find_loc(input$location_str), seqinfo=seqinfo(genome))) == TRUE) {
       stop(safeError(
-        "Input unknown: please check for typos"
+        "Input unknown: please check for typos."
       ))
-    } else {
+    }else {
       plot_genome( location() )
     }
   })
