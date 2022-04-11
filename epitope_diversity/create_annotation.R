@@ -1,4 +1,6 @@
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+library(biomaRt)
+
 options(ucscChromosomeNames=FALSE)
 
 txdb_ensembl <- makeTxDbFromEnsembl(organism="Homo sapiens",
@@ -13,3 +15,23 @@ txdb_ucsc <- makeTxDbFromUCSC("hg38", tablename="knownGene")
 
 
 saveDb(txdb_ucsc, "data/txdb_ucsc.db")
+
+
+##Get locations for transcript id's in txdb
+tx_names <- mcols(transcripts(txdb_ucsc, "tx_name"))
+
+ensembl <- useMart("ensembl", dataset= "hsapiens_gene_ensembl")
+
+tx_locs <- getBM(attributes=c('ensembl_transcript_id_version',
+                              'ensembl_transcript_id',
+                              'external_gene_name',
+                              'chromosome_name',
+                              'start_position',
+                              'end_position'),
+                 values=tx_names$tx_name,
+                 filters = "ensembl_transcript_id_version",
+                 mart=ensembl)
+
+saveRDS(tx_locs, file = "data/tx_locs.rds")
+
+
