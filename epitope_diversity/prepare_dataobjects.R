@@ -1,5 +1,6 @@
-library("dplyr")
-all_tsr <- read_csv("epitope_diversity/data/All_TSR_mTECs.csv")
+library(dplyr)
+library(tidyverse)
+all_tsr <- read_csv("data/All_TSR_mTECs.csv")
 
 hi <- all_tsr %>%
     dplyr::select(Chr, Start, Stop, contains("hi_TPM"))
