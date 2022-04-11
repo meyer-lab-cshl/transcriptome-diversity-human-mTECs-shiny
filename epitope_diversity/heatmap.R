@@ -58,7 +58,7 @@ diffexp_symbols <- diffexp %>%
                                      target_id, 
                                      external_gene_name)) %>%
   mutate(external_gene_name = 
-           ifelse(duplicated(external_gene_name),
+           ifelse(duplicated(external_gene_name) | duplicated(external_gene_name, fromLast = TRUE),
                   paste(external_gene_name, 
                         target_id, sep ="_"),
                   external_gene_name)) 
@@ -97,6 +97,7 @@ counts_matrix <- combined %>%
 
 fc_matrix <- combined %>%
   dplyr::select(b) %>%
+  dplyr::rename(LogFoldChange = b) %>%
   as.matrix
 
 # Reformat TPM's and create coldata
@@ -157,7 +158,7 @@ hm_fc <- Heatmap(fc_matrix,
                         title_gp = gpar(fontsize = text_size,
                                         fontface = "bold"),
                         labels_gp = gpar(fontsize = text_size)),
-                 name = "lFC",
+                 name = "Log Fold Change",
                  width = unit(3, "cm"))
 
 # Save counts heatmap
