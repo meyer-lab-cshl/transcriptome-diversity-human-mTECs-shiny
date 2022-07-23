@@ -9,7 +9,7 @@ source("browser.R")
 ## Create dashboard ####
 ui <- dashboardPage(
     skin = "green",
-    dashboardHeader(title = "Epitope Diversity in human T cell education",
+    dashboardHeader(title = "Transcriptomic Diversity in human T cell education",
                     titleWidth = 450),
     dashboardSidebar(
         # width = 450,
@@ -20,7 +20,7 @@ ui <- dashboardPage(
                 icon = icon("project-diagram")
             ),
             menuItem(
-                "Epitope Browser",
+                "Transcriptome Browser",
                 tabName = "genes",
                 icon = icon("wpexplorer")
             ),
@@ -40,17 +40,17 @@ ui <- dashboardPage(
                 div(
                     h2("About"),
                     p(
-                        "The induction of central T-cell tolerance in the thymus depends on the  presentation of peripheral self-epitopes by medullary thymic epithelial cells (mTECs), enabled by a process known as promiscuous gene expression (pGE). Epitope diversity generated during pGE has many contributors, including non-canonical transcription initiation, alternative splicing and expression of endogenous retroelements. Here, we mapped the expression of genome-wide epitopes in immature and mature human mTECs (MHCII expression is low and high, respectively; refered to as mTEC lo and mTEC hi)  using high-throughput 5'Cap and RNA sequencing."
+                        "The induction of central T-cell tolerance in the thymus depends on the  presentation of peripheral self-epitopes by medullary thymic epithelial cells (mTECs), enabled by a process known as promiscuous gene expression (pGE). Transcriptomic diversity generated during pGE has many contributors, including non-canonical transcription initiation, alternative splicing and expression of endogenous retroelements. Here, we mapped the expression of genome-wide epitopes in immature and mature human mTECs (MHCII expression is low and high, respectively; refered to as mTEC lo and mTEC hi)  using high-throughput 5'Cap and RNA sequencing."
                     ),
                     p(
                         "This application allows for the exploration of this rich dataset. In the",
-                        em("Epitope Browser"),
+                        em("Transcriptome Browser"),
                         "RNA sequencing and 5'Cap reads, as well as the transcription start regions derived from the latter can be explored. In the",
                         em("Expression Heatmap"),
                         ", gene expression and their fold changes between mTEC hi and lo can be explored."
                     ),
                     p(
-                        "We provide this comprehensive epitope map of the human thymus as a resource to the community, to facilitate the identification of epitopes implicated in auto-immune responses against healthy tissue or immune responses against cancer cells."
+                        "We provide this comprehensive transcriptome map of the human thymus as a resource to the community, to facilitate the identification of epitopes implicated in auto-immune responses against healthy tissue or immune responses against cancer cells."
                     ),
                     p(
                         "If you use this resource, please cite: Carter JA, Strömich L, Peacey M, Chapin S, Velten L, Steinmetz LM, Brors B, Pinto S, and Meyer HV (2021)", em("Epitope diversity in human medullary thymus epithelial cells")
@@ -69,7 +69,7 @@ ui <- dashboardPage(
             "genes",
             
             div(
-                titlePanel("Epitope Browser"),
+                titlePanel("Transcriptome Browser"),
                 p(
                     "Genome-wide transcription start regions and gene expression in two maturation stages of human medullary thymic epithelial cells (mTECs) - immature, MHCII low expressing mTECs (mTEC lo) and mature, MHCII high expressing mTECs (mTEC hi)."
                 ),
@@ -80,6 +80,12 @@ ui <- dashboardPage(
                 ),
                 shiny::tags$li(
                     "The mTEC hi/lo RNAseq tracks display the alignments of the reads from the RNAseq experiments."
+                ),
+                p(
+                    ""
+                ),
+                p(
+                    "Please note that the transcriptome browser may intially take a few minutes to load below. You may also experience short delays when searching or navigating through the browser, during which the browser will be grayed out."
                 ),
                 shiny::tags$script(HTML(
                     "var socket_timeout_interval;
