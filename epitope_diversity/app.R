@@ -53,13 +53,13 @@ ui <- dashboardPage(
                         "We provide this comprehensive transcriptome map of the human thymus as a resource to the community, to facilitate the identification of epitopes implicated in auto-immune responses against healthy tissue or immune responses against cancer cells."
                     ),
                     p(
-                        "If you use this resource, please cite: Carter JA, Strömich L, Peacey M, Chapin S, Velten L, Steinmetz LM, Brors B, Pinto S, and Meyer HV (2021)", em("Epitope diversity in human medullary thymus epithelial cells")
+                        "If you use this resource, please cite: Carter JA, Strömich L, Peacey M, Chapin S, Velten L, Steinmetz LM, Brors B, Pinto S, and Meyer HV (2021)", em("Transcriptomic diversity in human medullary thymus epithelial cells")
                     ),
                     p(
                         "Analysis code can be found at:",
-                        a(href = "https://github.com/meyer-lab-cshl/thymus-epitope-mapping", "thymus-epitope-mapping")
+                        a(href = "https://github.com/meyer-lab-cshl/thymus-epitope-mapping", "transcriptomic-diversity-human-mTECs")
                     ),
-                    p("Data will be available at EGA; submission under progress."),# a(href = "EGAXXX", "EGAXXX")),
+                    p("Data is available at:", a(href = "https://0-www-ncbi-nlm-nih-gov.brum.beds.ac.uk/geo/query/acc.cgi?acc=GSE201720", "GEO Accession.")),
                     p(
                         "For questions regarding the work, please contact: hmeyer [at] cshl.edu"
                     ),
