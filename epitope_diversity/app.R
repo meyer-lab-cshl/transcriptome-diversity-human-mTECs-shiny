@@ -57,7 +57,7 @@ ui <- dashboardPage(
                     ),
                     p(
                         "Analysis code can be found at:",
-                        a(href = "https://github.com/meyer-lab-cshl/thymus-epitope-mapping.", "transcriptomic-diversity-human-mTECs")
+                        a(href = "https://github.com/meyer-lab-cshl/thymus-epitope-mapping", "transcriptomic-diversity-human-mTECs.")
                     ),
                     p("Data is available at:", a(href = "https://0-www-ncbi-nlm-nih-gov.brum.beds.ac.uk/geo/query/acc.cgi?acc=GSE201720", "GEO Accession.")),
                     p(
