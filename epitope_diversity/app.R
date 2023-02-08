@@ -53,7 +53,10 @@ ui <- dashboardPage(
                         "We provide this comprehensive transcriptome map of the human thymus as a resource to the community, to facilitate the identification of epitopes implicated in auto-immune responses against healthy tissue or immune responses against cancer cells."
                     ),
                     p(
-                        "If you use this resource, please cite: Carter JA, Strömich L, Peacey M, Chapin S, Velten L, Steinmetz LM, Brors B, Pinto S, and Meyer HV (2021)", em("Transcriptomic diversity in human medullary thymus epithelial cells.")
+                        "If you use this resource, please cite: Carter JA, Strömich L, Peacey M, Chapin S, Velten L, Steinmetz LM, Brors B, Pinto S, and Meyer HV (2021)", em("Transcriptomic diversity in human medullary thymus epithelial cells."), "The article can be accessed", a(href = "https://www.nature.com/articles/s41467-022-31750-1", "here.")	
+                    ),
+                    p(
+                        "The research was supported by the Simons Center for Quantitative Biology at Cold Spring Harbor Laboratory; the Cold Spring Harbor Laboratory and Northwell Health Affiliation; US National Institutes of Health Grant S10OD028632-01 and 1R01AI167862-01; and by the G. Harold & Leila Y. Mathers Foundation.")	
                     ),
                     p(
                         "Analysis code can be found at:",
