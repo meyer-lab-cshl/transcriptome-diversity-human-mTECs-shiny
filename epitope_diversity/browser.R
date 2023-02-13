@@ -1,3 +1,6 @@
+#.libPaths("/opt/R/4.2.1/lib/R/library")
+
+
 ## Libraries ####
 library(GenomicRanges)
 library(Gviz)

@@ -1,3 +1,5 @@
+#.libPaths("/opt/R/4.2.1/lib/R/library")
+
 library(dplyr)
 library(tidyverse)
 all_tsr <- read_csv("data/All_TSR_mTECs.csv")

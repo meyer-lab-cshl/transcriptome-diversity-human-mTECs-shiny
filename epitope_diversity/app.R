@@ -1,3 +1,5 @@
+#.libPaths("/opt/R/4.2.1/lib/R/library")
+
 ## Libraries ####
 library(shiny)
 library(shinydashboard)
@@ -56,7 +58,7 @@ ui <- dashboardPage(
                         "If you use this resource, please cite: Carter JA, Strömich L, Peacey M, Chapin S, Velten L, Steinmetz LM, Brors B, Pinto S, and Meyer HV (2021)", em("Transcriptomic diversity in human medullary thymus epithelial cells."), "The article can be accessed", a(href = "https://www.nature.com/articles/s41467-022-31750-1", "here.")	
                     ),
                     p(
-                        "The research was supported by the Simons Center for Quantitative Biology at Cold Spring Harbor Laboratory; the Cold Spring Harbor Laboratory and Northwell Health Affiliation; US National Institutes of Health Grant S10OD028632-01 and 1R01AI167862-01; and by the G. Harold & Leila Y. Mathers Foundation.")	
+                        "The research was supported by the Simons Center for Quantitative Biology at Cold Spring Harbor Laboratory; the Cold Spring Harbor Laboratory and Northwell Health Affiliation; US National Institutes of Health Grant S10OD028632-01 and 1R01AI167862-01; the G. Harold & Leila Y. Mathers Foundation; and by the Pershing Square Innovation Fund."	
                     ),
                     p(
                         "Analysis code can be found at:",

@@ -1,3 +1,4 @@
+#.libPaths("/opt/R/4.2.1/lib/R/library")
 
 ## libraries ####
 library("DESeq2")

@@ -1,0 +1,13 @@
+
+module httpd-6473 1.0;
+
+require {
+	type unreserved_port_t;
+	type httpd_t;
+	class tcp_socket name_connect;
+}
+
+#============= httpd_t ==============
+
+#!!!! This avc is allowed in the current policy
+allow httpd_t unreserved_port_t:tcp_socket name_connect;

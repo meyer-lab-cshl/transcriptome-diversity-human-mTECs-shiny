@@ -1,0 +1,3 @@
+sudo systemctl stop epitopediversity
+Rscript app.R
+sudo systemctl restart epitopediversity

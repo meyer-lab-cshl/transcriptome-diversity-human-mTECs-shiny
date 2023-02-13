@@ -1,3 +1,5 @@
+#.libPaths("/opt/R/4.2.1/lib/R/library")
+
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 library(biomaRt)
 
